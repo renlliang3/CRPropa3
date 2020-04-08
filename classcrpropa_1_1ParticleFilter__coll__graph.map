@@ -1,0 +1,8 @@
+<map id="ParticleFilter" name="ParticleFilter">
+<area shape="rect" id="node2" href="$classcrpropa_1_1AbstractCondition.html" title="Abstract Module providing common features for conditional modules. " alt="" coords="121,215,257,241"/>
+<area shape="rect" id="node3" href="$classcrpropa_1_1Module.html" title="Abstract base class for modules. " alt="" coords="45,81,113,108"/>
+<area shape="rect" id="node4" href="$group__Core.html#classcrpropa_1_1Referenced" title="Base class for reference counting. " alt="" coords="5,5,100,32"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="159,81,218,108"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="124,5,280,32"/>
+<area shape="rect" id="node7" href="$group__Core.html" title="ref_ptr\&lt; crpropa::Module \&gt;" alt="" coords="242,81,439,108"/>
+</map>

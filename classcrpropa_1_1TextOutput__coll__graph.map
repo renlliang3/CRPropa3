@@ -1,0 +1,16 @@
+<map id="TextOutput" name="TextOutput">
+<area shape="rect" id="node2" href="$classcrpropa_1_1Output.html" title="Configurable output base class. " alt="" coords="1259,133,1325,160"/>
+<area shape="rect" id="node3" href="$classcrpropa_1_1Module.html" title="Abstract base class for modules. " alt="" coords="1005,189,1073,216"/>
+<area shape="rect" id="node4" href="$group__Core.html#classcrpropa_1_1Referenced" title="Base class for reference counting. " alt="" coords="701,195,795,221"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="221,103,279,129"/>
+<area shape="rect" id="node9" href="$structcrpropa_1_1Output_1_1Property.html" title="Property" alt="" coords="710,72,786,99"/>
+<area shape="rect" id="node10" href="$classcrpropa_1_1Variant.html" title="storage container for data types as e.g. int, float, string, etc. " alt="" coords="423,5,491,32"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="5,103,161,129"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="1252,296,1332,323"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="949,296,1128,323"/>
+<area shape="rect" id="node13" title="STL class. " alt="" coords="660,296,836,323"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="387,321,527,348"/>
+<area shape="rect" id="node17" title="STL class. " alt="" coords="661,347,835,373"/>
+<area shape="rect" id="node15" title="STL class. " alt="" coords="211,321,289,348"/>
+<area shape="rect" id="node16" title="STL class. " alt="" coords="1152,347,1228,373"/>
+</map>

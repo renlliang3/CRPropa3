@@ -1,0 +1,6 @@
+<map id="Candidate" name="Candidate">
+<area shape="rect" id="node2" href="$group__Core.html#classcrpropa_1_1Referenced" title="Base class for reference counting. " alt="" coords="665,57,760,83"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="260,5,492,76"/>
+<area shape="rect" id="node9" href="$group__Core.html" title="ref_ptr\&lt; crpropa::Candidate \&gt;" alt="" coords="268,181,484,207"/>
+<area shape="rect" id="node10" href="$group__Core.html#classcrpropa_1_1ParticleState" title="State of the particle: ID, energy, position, direction. " alt="" coords="661,250,765,277"/>
+</map>
