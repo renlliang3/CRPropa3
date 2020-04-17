@@ -141,17 +141,7 @@ add_subdirectory(libs/sophia)
 list(APPEND CRPROPA_EXTRA_LIBRARIES sophia gfortran)
 list(APPEND CRPROPA_EXTRA_INCLUDES libs/sophia)
 
-# DINT (provided)
-add_subdirectory(libs/dint)
-list(APPEND CRPROPA_EXTRA_LIBRARIES dint)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/dint/include)
-
-# EleCa (provided)
-add_subdirectory(libs/EleCa)
-list(APPEND CRPROPA_EXTRA_LIBRARIES eleca)
-list(APPEND CRPROPA_EXTRA_INCLUDES libs/EleCa/include)
-
-# GlacticMagneticLenses
+# Galactic Magnetic Lenses
 option(ENABLE_GALACTICMAGETICLENS "Galactic Magnetic Lens" ON)
 option(INSTALL_EIGEN "Install provided EIGEN headers" OFF)
 SET(EIGEN_PATH  "" CACHE STRING "Use EIGEN from this path instead of the version shipped with CRPropa")
