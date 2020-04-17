@@ -346,7 +346,6 @@ add_library(crpropa SHARED
 	src/ParticleMass.cpp
 	src/ParticleState.cpp
 	src/PhotonBackground.cpp
-	src/PhotonPropagation.cpp
 	src/ProgressBar.cpp
 	src/Random.cpp
 	src/Source.cpp
@@ -354,7 +353,6 @@ add_library(crpropa SHARED
 	src/module/Boundary.cpp
 	src/module/BreakCondition.cpp
 	src/module/DiffusionSDE.cpp
-	src/module/EMCascade.cpp
 	src/module/EMDoublePairProduction.cpp
 	src/module/EMInverseComptonScattering.cpp
 	src/module/EMPairProduction.cpp
@@ -369,8 +367,6 @@ add_library(crpropa SHARED
 	src/module/ParticleCollector.cpp
 	src/module/PhotoDisintegration.cpp
 	src/module/PhotoPionProduction.cpp
-	src/module/PhotonEleCa.cpp
-	src/module/PhotonOutput1D.cpp
 	src/module/PropagationCK.cpp
 	src/module/PropagationBP.cpp
         src/module/Redshift.cpp
