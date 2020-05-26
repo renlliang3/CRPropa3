@@ -17,5 +17,8 @@ Additional Resources
    using initial conditions from the `CLUES
    project <https://arxiv.org/abs/1510.04900>`__ can be downloaded
    `here <https://desycloud.desy.de/index.php/s/gmzNybEKbk7iNQW?path=%2Fclues>`__.
+-  Data for the strong extragalactic magnetic field `'Alves Batista'
+   models <https://arxiv.org/abs/1704.05869>`__  can be downloaded
+   `here <https://desycloud.desy.de/index.php/s/gmzNybEKbk7iNQW?path=%2FstrongEGMF>`__.
 
 
