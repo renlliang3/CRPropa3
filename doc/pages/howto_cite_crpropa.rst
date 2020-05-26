@@ -56,6 +56,9 @@ Miniati
 CLUES
   Mon. Not. Roy. Astron. Soc. 475 (2018) 2519 `arXiv:1710.01353 <https://arxiv.org/abs/1710.01353>`__
 
+Alves Batista
+  Phys. Rev. D 96 (2017) 023010 `arXiv:1704.05869 <https://arxiv.org/abs/1704.05869>`__
+
 
 Photon Backgrounds
 ^^^^^^^^^^^^^^^^^^
