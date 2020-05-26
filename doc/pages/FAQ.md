@@ -12,7 +12,7 @@ If your issue is not listed, open a new ticket.
 Please be aware that we cannot support general issues regarding an operating
 system setup, a third party package installation, an unsupported third party
 package (libraries, compilers) version or similar, therefore do not report them
-to us. In case of doubt whether something is an CRPropa issue or not, report
+to us. In case of doubt whether something is a CRPropa issue or not, report
 the problem to the issue tracker.
 
 ### How to specify the seed for the random number generator?
