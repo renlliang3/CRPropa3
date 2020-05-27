@@ -10,9 +10,9 @@ namespace crpropa {
 
 EMDoublePairProduction::EMDoublePairProduction(PhotonField photonField, bool haveElectrons, double thinning, double limit) {
 	setPhotonField(photonField);
-	this->haveElectrons = haveElectrons;
-	this->thinning = thinning;
-	this->limit = limit;
+	setHaveElectrons(haveElectrons);
+	setLimit(limit);
+	setThinning(thinning);
 }
 
 void EMDoublePairProduction::setPhotonField(PhotonField photonField) {
@@ -60,7 +60,7 @@ void EMDoublePairProduction::initRate(std::string filename) {
 
 
 void EMDoublePairProduction::performInteraction(Candidate *candidate) const {
-	// the photon is lost in interaction
+	// the photon is lost after the interaction
 	candidate->setActive(false);
 
 	if (not haveElectrons)
@@ -69,7 +69,8 @@ void EMDoublePairProduction::performInteraction(Candidate *candidate) const {
 	// Use assumption of Lee 96 arXiv:9604098
 	// Energy is equally shared between one e+e- pair, but take mass of second e+e- pair into account.
 	// This approximation has been shown to be valid within -1.5%.
-	double E = candidate->current.getEnergy();
+	double z = candidate->getRedshift();
+	double E = candidate->current.getEnergy() * (1 + z);
 	double Ee = (E - 2 * mass_electron * c_squared) / 2;
 
 	Random &random = Random::instance();
@@ -81,11 +82,11 @@ void EMDoublePairProduction::performInteraction(Candidate *candidate) const {
 	if (haveElectrons) {
 		if (random.rand() < pow(1 - f, thinning)) {
 			double w = w0 / pow(1 - f, thinning);
-			candidate->addSecondary( 11, Ee, pos, w);
+			candidate->addSecondary( 11, Ee / (1 + z), pos, w);
 		} 
 		if (random.rand() < pow(f, thinning)) {
 			double w = w0 / pow(f, thinning);
-			candidate->addSecondary(-11, Ee, pos, w);
+			candidate->addSecondary(-11, Ee / (1 + z), pos, w);
 		}
 	}
 }
@@ -107,20 +108,18 @@ void EMDoublePairProduction::process(Candidate *candidate) const {
 	double rate = interpolate(E, tabEnergy, tabRate);
 	rate *= pow(1 + z, 2) * photonFieldScaling(photonField, z);
 
-	// run this loop at least once to limit the step size
+	// check for interaction
+	Random &random = Random::instance();
+	double randDistance = -log(random.rand()) / rate;
 	double step = candidate->getCurrentStep();
-	while (step > 0) {
-		// check for interaction
-		Random &random = Random::instance();
-		double randDistance = -log(random.rand()) / rate;
-		if (step < randDistance) {
-			candidate->limitNextStep(limit / rate);
-			return;
-		}
+	if (step < randDistance) {
+		candidate->limitNextStep(limit / rate);
+		return;
+	} else { // after performing interaction photon ceases to exist (hence return)
 		performInteraction(candidate);
-
-		step -= randDistance;
+		return;
 	}
+
 }
 
 

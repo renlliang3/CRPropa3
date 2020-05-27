@@ -13,9 +13,9 @@ static const double mec2 = mass_electron * c_squared;
 
 EMInverseComptonScattering::EMInverseComptonScattering(PhotonField photonField, bool havePhotons, double thinning, double limit) {
 	setPhotonField(photonField);
-	this->havePhotons = havePhotons;
-	this->limit = limit;
-	this->thinning = thinning;
+	setHavePhotons(havePhotons);
+	setLimit(limit);
+	setThinning(thinning);
 }
 
 void EMInverseComptonScattering::setPhotonField(PhotonField photonField) {
@@ -172,14 +172,14 @@ class ICSSecondariesEnergyDistribution {
 void EMInverseComptonScattering::performInteraction(Candidate *candidate) const {
 	// scale the particle energy instead of background photons
 	double z = candidate->getRedshift();
-	double E = candidate->current.getEnergy();
+	double E = candidate->current.getEnergy() * (1 + z);
 
-	if (E * (1 + z) < tabE.front() or E * (1 + z) > tabE.back())
+	if (E < tabE.front() or E > tabE.back())
 		return;
 
 	// sample the value of s
 	Random &random = Random::instance();
-	size_t i = closestIndex(E * (1 + z), tabE);
+	size_t i = closestIndex(E, tabE);
 	size_t j = random.randBin(tabCDF[i]);
 	double s_kin = pow(10, log10(tabs[j]) + (random.rand() - 0.5) * 0.1);
 	double s = s_kin + mec2 * mec2;
@@ -196,25 +196,25 @@ void EMInverseComptonScattering::performInteraction(Candidate *candidate) const 
 		if (random.rand() < pow(1 - f, thinning)) {
 			double w = w0 / pow(1 - f, thinning);
 			Vector3d pos = random.randomInterpolatedPosition(candidate->previous.getPosition(), candidate->current.getPosition());
-			candidate->addSecondary(22, Esecondary, pos, w);
+			candidate->addSecondary(22, Esecondary / (1 + z), pos, w);
 		}
 	}
 
 	// update the primary particle energy; do this after adding the secondary to correctly set the secondary's parent
-	candidate->current.setEnergy(Enew);
+	candidate->current.setEnergy(Enew / (1 + z));
 }
 
 void EMInverseComptonScattering::process(Candidate *candidate) const {
 	// check if electron / positron
 	int id = candidate->current.getId();
-	if (id != 11 && id != -11)
+	if (abs(id) != 11)
 		return;
 
 	// scale the particle energy instead of background photons
 	double z = candidate->getRedshift();
-	double E = candidate->current.getEnergy();
+	double E = candidate->current.getEnergy() * (1 + z);
 
-	if (E * (1 + z) < tabEnergy.front() or (E * (1 + z) > tabEnergy.back()))
+	if (E < tabEnergy.front() or (E > tabEnergy.back()))
 		return;
 
 	// interaction rate
@@ -223,21 +223,20 @@ void EMInverseComptonScattering::process(Candidate *candidate) const {
 
 	// run this loop at least once to limit the step size
 	double step = candidate->getCurrentStep();
-	while (step > 0) {
+	do {
 		Random &random = Random::instance();
 		double randDistance = -log(random.rand()) / rate;
 
-		// check for interaction; if it doesn't ocurr, limut next step
+		// check for interaction; if it doesn't ocurr, limit next step
 		if (step < randDistance) {
 			candidate->limitNextStep(limit / rate);
 			return;
 		}
-		// interaction
 		performInteraction(candidate);
 
 		// repeat with remaining step
 		step -= randDistance;
-	}
+	} while (step > 0);
 }
 
 } // namespace crpropa

@@ -12,9 +12,9 @@ static const double mec2 = mass_electron * c_squared;
 
 EMTripletPairProduction::EMTripletPairProduction(PhotonField photonField, bool haveElectrons, double thinning, double limit) {
 	setPhotonField(photonField);
-	this->haveElectrons = haveElectrons;
-	this->limit = limit;
-	this->thinning = thinning;
+	setHaveElectrons(haveElectrons);
+	setLimit(limit);
+	setThinning(thinning);
 }
 
 void EMTripletPairProduction::setPhotonField(PhotonField photonField) {
@@ -102,8 +102,8 @@ void EMTripletPairProduction::initCumulativeRate(std::string filename) {
 }
 
 void EMTripletPairProduction::performInteraction(Candidate *candidate) const {
-
-	if  (abs(candidate->current.getId()) != 11)
+	int id = candidate->current.getId();
+	if  (abs(id) != 11)
 		return;
 
 	// scale the particle energy instead of background photons
@@ -118,7 +118,7 @@ void EMTripletPairProduction::performInteraction(Candidate *candidate) const {
 	size_t i = closestIndex(E, tabE);
 	size_t j = random.randBin(tabCDF[i]);
 	double s_kin = pow(10, log10(tabs[j]) + (random.rand() - 0.5) * 0.1);
-	double eps = s_kin / 4 / E; // random background photon energy
+	double eps = s_kin / 4. / E; // random background photon energy
 
 	// Use approximation from A. Mastichiadis et al., Astroph. Journ. 300:178-189 (1986), eq. 30.
 	// This approx is valid only for alpha >=100 where alpha = p0*eps*costheta - E0*eps
@@ -132,16 +132,16 @@ void EMTripletPairProduction::performInteraction(Candidate *candidate) const {
 		Vector3d pos = random.randomInterpolatedPosition(candidate->previous.getPosition(), candidate->current.getPosition());
 		if (random.rand() < pow(1 - f, thinning)) {
 			double w = w0 / pow(1 - f, thinning);
-			candidate->addSecondary(11, Epp, pos, w);
+			candidate->addSecondary(11, Epp / (1 + z), pos, w);
 		}
 		if (random.rand() < pow(f, thinning)) {
 			double w = w0 / pow(f, thinning);
-			candidate->addSecondary(-11, Epp, pos, w);
+			candidate->addSecondary(-11, Epp / (1 + z), pos, w);
 		}
 	}
-
-	// update the primary particle energy; do this after adding the secondaries to correctly set the secondaries parent
-	candidate->current.setEnergy((E - 2 * Epp));
+	// Update the primary particle energy.
+	// This is done after adding the secondaries to correctly set the secondaries parent
+	candidate->current.setEnergy((E - 2 * Epp) / (1. + z));
 }
 
 void EMTripletPairProduction::process(Candidate *candidate) const {
@@ -155,7 +155,7 @@ void EMTripletPairProduction::process(Candidate *candidate) const {
 	double E = (1 + z) * candidate->current.getEnergy();
 
 	// check if in tabulated energy range
-	if (E < tabEnergy.front() or (E > tabEnergy.back()))
+	if ((E < tabEnergy.front()) or (E > tabEnergy.back()))
 		return;
 
 	// cosmological scaling of interaction distance (comoving)
@@ -164,18 +164,16 @@ void EMTripletPairProduction::process(Candidate *candidate) const {
 
 	// run this loop at least once to limit the step size
 	double step = candidate->getCurrentStep();
-	while (step > 0) {
-		// check for interaction
+	do {
 		Random &random = Random::instance();
 		double randDistance = -log(random.rand()) / rate;
-		if (step < randDistance) {
+		// check for interaction; if it doesn't ocurr, limit next step
+		if (step < randDistance) { 
 			candidate->limitNextStep(limit / rate);
-			return;
 		}
 		performInteraction(candidate);
-
-		step -= randDistance;
-	}
+		step -= randDistance; 
+	} while (step > 0.);
 }
 
 } // namespace crpropa
